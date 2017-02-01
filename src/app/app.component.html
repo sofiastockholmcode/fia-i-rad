@@ -1,0 +1,23 @@
+<div class="container-fluid">
+    <div class="row border-row">
+        <div class="col-xs-4 content"  *ngFor="let square of squares; let i = index">
+            <div class="square-container">
+                <div class="inside" (click)="squareClick(square)" [class.use-cursor]="!gameIsFinished">
+                    <div class="center-this-shit">
+                        <i class="glyphicon text-center" [class.glyphicon-remove]="square.state=='checked'" [class.glyphicon-heart-empty]="square.state=='oppChecked'"></i>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="gameIsFinished">
+    <div class="row">
+        <div class="col-md-12" style="text-align: center">
+            <h1>{{result}}</h1>
+            <button class="btn btn-default btn-lg" (click)="reset()">Play Again</button>
+        </div>
+    </div>
+</div>

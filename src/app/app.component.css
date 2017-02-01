@@ -1,0 +1,59 @@
+main {
+  padding: 1em;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  margin-top: 50px;
+  display: block;
+}
+
+
+.content {
+  background: white;
+}
+
+.col-xs-4 {
+  border: 1px solid #999;
+  padding: 0px!important;
+}
+
+.border-row {
+  border: 1px solid #999;
+  width: 70%;
+  margin: 0 auto;
+}
+
+.square-container {
+  width: 100%;
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+  position: relative; /* If you want text inside of it */
+}
+
+.inside {
+  cursor: default;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.use-cursor {
+  cursor: pointer;
+}
+
+.center-this-shit {
+  text-align: center;
+  height:100%;
+  line-height: 100%;
+}
+
+.glyphicon {
+  font-size: 8vw;
+  overflow: hidden;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  color:#000;
+}
+
