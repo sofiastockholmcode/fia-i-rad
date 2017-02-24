@@ -14,13 +14,16 @@ import {Store, StoreModule } from '@ngrx/store'
 
 import {RootComponent} from "./root.component";
 import {HttpModule} from '@angular/http';
+import {ChatService} from "./chat.service";
+import {ChatComponent} from "./chat.component";
 
 
 
 
 //noinspection TypeScriptValidateTypes
 const appRoutes: Routes = [
-    {path: '', component: AppComponent},
+    {path: '', component: ChatComponent},
+    {path: 'chat', component: ChatComponent},
     {path: '**', component: AppComponent}
 ];
 
@@ -36,10 +39,12 @@ const appRoutes: Routes = [
   ],
   declarations: [
     AppComponent,
-    RootComponent
+    RootComponent,
+    ChatComponent
   ],
     providers: [
-        AppService
+        AppService,
+        ChatService
     ],
   bootstrap: [ RootComponent ]
 })

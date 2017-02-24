@@ -1,12 +1,13 @@
 import { Component, Directive, Renderer, ElementRef } from '@angular/core';
 import '../../public/css/styles.css';
-import '../../public/css/bootstrap-social.css';
 import {AppService} from "./app.service";
 import {Router} from "@angular/router";
 
 import { Store, provideStore} from '@ngrx/store'
 import { Observable } from 'rxjs/Observable'
 import {Reducer,  Action, ActionReducer} from '@ngrx/store';
+import {ChatService} from "./chat.service";
+
 
 @Component({
   selector: 'my-app',

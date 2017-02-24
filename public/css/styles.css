@@ -12,3 +12,10 @@ h1 {
     text-align: center;
     max-width: 100%;
 }
+
+
+.chatbox {
+    overflow-y:scroll;
+    max-height:300px;
+    background-color: #fff;
+}
