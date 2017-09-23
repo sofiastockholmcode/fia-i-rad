@@ -14,15 +14,16 @@ import {Store, StoreModule } from '@ngrx/store'
 
 import {RootComponent} from "./root.component";
 import {HttpModule} from '@angular/http';
-import {ChatService} from "./chat.service";
+import {ChatService, names} from "./chat.service";
 import {ChatComponent} from "./chat.component";
+import {SelectModeComponent} from "./select-mode.component";
 
 
 
 
 //noinspection TypeScriptValidateTypes
 const appRoutes: Routes = [
-    {path: '', component: ChatComponent},
+    {path: '', component: SelectModeComponent},
     {path: 'chat', component: ChatComponent},
     {path: '**', component: AppComponent}
 ];
@@ -33,14 +34,15 @@ const appRoutes: Routes = [
     BrowserModule,
     FormsModule,
     HttpModule,
-    StoreModule.provideStore({squareReducer}),
+    StoreModule.provideStore({squareReducer, names}),
     RouterModule.forRoot(appRoutes),
 
   ],
   declarations: [
     AppComponent,
     RootComponent,
-    ChatComponent
+    ChatComponent,
+      SelectModeComponent
   ],
     providers: [
         AppService,

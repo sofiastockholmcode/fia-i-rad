@@ -12,7 +12,7 @@ import {ChatService} from "./chat.service";
             </div>
         </div>
 
-        <form (ngSubmit)="sendMessage()" class="form-inline">
+        <form (keyup.enter)="sendMessage()" class="form-inline">
             <input class="form-control" [(ngModel)]="message" name="message" required/>
             <button class="btn btn-primary btn-sm" type="submit">Send</button>
         </form>

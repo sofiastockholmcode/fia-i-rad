@@ -1,0 +1,11 @@
+<div *ngIf="!multiSelected" class="text-center">
+    <button class="btn btn-lg btn-primary" (click)="selectSingle()">Single player</button>
+    <button class="btn btn-lg btn-primary" (click)="selectMulti()">Multiplayer</button>
+</div>
+
+<div *ngIf="multiSelected" class="text-center">
+    <div class="form-inline">
+        <label>Select name:</label>
+        <input class="form-control" type="text" [(ngModel)]="name" (keyup.enter)="setName()" >
+    </div>
+</div>
