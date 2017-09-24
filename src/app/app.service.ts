@@ -12,6 +12,8 @@ import { Http, Response } from '@angular/http';
 
 @Injectable()
 export class AppService {
+    private url = 'http://localhost:8080';
+    private socket = io(this.url);
 
     constructor(private http:Http, private store:Store<any>) {}
 
@@ -24,14 +26,28 @@ export class AppService {
     }
 
     getSquareState(pos:String) {
+    }
 
+    sendSquare(square:Square):void {
+        this.socket.emit('square', square);
+    }
+
+    getSquares() {
+        console.log('get squares');
+        let observable = new Observable((observer:any) => {
+            this.socket.on('square', (data:any) => {
+                observer.next(data);
+            })
+
+            return () => {
+                this.socket.disconnect();
+            }
+        })
+
+        return observable;
     }
 
 }
-
-
-
-
 
 export const SET_SQUARE_STATE = 'SET_SQUARE_STATE';
 export const RESET_SQUARES = 'RESET_SQUARES';
@@ -46,16 +62,21 @@ let initialStateSquares = [
     {name: '31', state: 'unchecked'},
     {name: '32', state: 'unchecked'},
     {name: '33', state: 'unchecked'}
-]
+];
 
 export const squareReducer:ActionReducer<any> = (state:any = initialStateSquares, action:Action) => {
     switch (action.type) {
         case SET_SQUARE_STATE:
             let newState = state.map((square:Square) => {
-                if (square.name == action.payload.name)
-                    square.state = action.payload.state;
+                if (square.name == action.payload.square.name) {
+                    console.log(action.payload.username);
+                    if (action.payload.username == 1)
+                        square.state = action.payload.square.state;
+                    else square.state = 'oppChecked';
+                }
                 return square;
             });
+            console.log('new state is', newState);
             return newState;
         case RESET_SQUARES:
             console.log('reset squares');

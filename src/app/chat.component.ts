@@ -6,16 +6,18 @@ import {ChatService} from "./chat.service";
 @Component({
     selector:'chat',
     template: `
+    <div class="chat-container">
         <div class="chatbox">
             <div *ngFor="let message of messages">
                 <span><strong>{{message.username}}:</strong> {{message.text}}</span>
             </div>
         </div>
 
-        <form (ngSubmit)="sendMessage()" class="form-inline">
+        <form (ngSubmit)="sendMessage()" class="form-inline" style="position: fixed; bottom: 0">
             <input class="form-control" [(ngModel)]="message" name="message" required/>
-            <button class="btn btn-primary btn-sm" type="submit">Send</button>
+            <button class="btn btn-default btn-sm" type="submit">Send</button>
         </form>
+    </div>
 
 
 

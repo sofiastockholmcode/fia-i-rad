@@ -21,13 +21,21 @@ io.on('connection', function(socket){
     let username = socket.client.id.substring(0,5);
 
     socket.on('new message', function(data) {
-        console.log('new message', data)
+        console.log('new message', data);
 
         io.emit('new message', {
             username: username,
             text: data
         })
-    })
+    });
+
+    socket.on('square', function(data) {
+        console.log('got square');
+        io.emit('square', {
+            username: username,
+            square: data
+        })
+    });
 
     socket.on('disconnect', function() {
         console.log('disconnect');

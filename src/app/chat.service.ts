@@ -3,8 +3,6 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable'
 import * as io from 'socket.io-client'
 
-
-
 export class ChatService {
     private url = 'http://localhost:8080';
     private socket = io(this.url);
@@ -27,5 +25,4 @@ export class ChatService {
 
         return observable;
     }
-
 }
