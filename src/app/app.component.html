@@ -4,7 +4,7 @@
             <div class="square-container">
                 <div class="inside" (click)="squareClick(square)" [class.use-cursor]="!gameIsFinished">
                     <div class="center-this-shit">
-                        <i class="glyphicon text-center" [class.glyphicon-remove]="square.state=='checked'" [class.glyphicon-heart-empty]="square.state=='oppChecked'"></i>
+                        <i class="glyphicon text-center" [class.glyphicon-remove]="square.state=='cross'" [class.glyphicon-heart-empty]="square.state=='heart'"></i>
                     </div>
 
                 </div>
