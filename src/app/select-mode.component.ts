@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {ChatService} from "./chat.service";
 import {Store} from "@ngrx/store";
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -8,7 +9,7 @@ import {Store} from "@ngrx/store";
     templateUrl: './select-mode.component.html',
 })
 export class SelectModeComponent {
-    constructor(private chatService:ChatService, public store:Store<any>) {
+    constructor(private chatService:ChatService, public store:Store<any>, private router:Router) {
 
     }
 
@@ -21,13 +22,14 @@ export class SelectModeComponent {
     }
 
     selectMulti() {
-        console.log("select multi")
+        console.log("select multi");
         this.multiSelected = true;
     }
 
     setName() {
         console.log(this.name);
         this.chatService.setName(this.name);
+        this.router.navigateByUrl('tic')
     }
 
 }

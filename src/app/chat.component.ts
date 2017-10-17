@@ -1,5 +1,3 @@
-
-
 import { Component } from '@angular/core';
 import {ChatService} from "./chat.service";
 
@@ -13,8 +11,7 @@ import {ChatService} from "./chat.service";
             </div>
         </div>
 
-        <form (keyup.enter)="sendMessage()" class="form-inline">
-        <form (ngSubmit)="sendMessage()" class="form-inline" style="position: fixed; bottom: 0">
+        <form (keyup.enter)="sendMessage()" class="form-inline" style="position: fixed; bottom: 0">
             <input class="form-control" [(ngModel)]="message" name="message" required/>
             <button class="btn btn-default btn-sm" type="submit">Send</button>
         </form>
@@ -23,7 +20,6 @@ import {ChatService} from "./chat.service";
 
 
     `
-
 })
 
 

@@ -1,27 +1,27 @@
-import { Component, Directive, Renderer, ElementRef } from '@angular/core';
+import {Component} from '@angular/core';
 import '../../public/css/styles.css';
 import {AppService} from "./app.service";
 import {Router} from "@angular/router";
 
-import { Store, provideStore} from '@ngrx/store'
-import { Observable } from 'rxjs/Observable'
-import {Reducer,  Action, ActionReducer} from '@ngrx/store';
+import { Store} from '@ngrx/store'
 import {ChatService} from "./chat.service";
 
 
 @Component({
   selector: 'my-app',
-  templateUrl: './app.component.html',
+  templateUrl: './board.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+
+export class BoardComponent {
 
   squares:Square[];
   gameIsFinished = false;
   result = '';
   connection:any;
+  numUsers:any;
 
-  constructor(private appService:AppService, private router:Router, public store:Store<any>) {
+  constructor(private appService:AppService, private router:Router, public store:Store<any>, private chatService:ChatService) {
     this.store.select('squareReducer').subscribe(
         squares => {
           this.squares = <Square[]>squares;
@@ -35,7 +35,13 @@ export class AppComponent {
     // this.opponentMove();
     this.connection = this.appService.getSquares().subscribe((square:Square) => {
       this.appService.setSquareState(square);
-    })
+    });
+
+    this.chatService.getNumUsers().subscribe((data:any) => {
+      console.log("got num users:", data)
+      this.numUsers = data.numUsers
+    });
+    console.log('this.numUsers: ', this.numUsers);
   }
 
   squareClick(square:any):void {

@@ -1,5 +1,3 @@
-
-import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable'
 import * as io from 'socket.io-client'
 import {ActionReducer, Action, Store} from "@ngrx/store";
@@ -8,11 +6,7 @@ import {Injectable} from '@angular/core';
 
 @Injectable()
 export class ChatService {
-    constructor(private store:Store<any>) {
-
-    }
-
-
+    constructor(private store:Store<any>) {}
     private url = 'http://localhost:8080';
     private socket = io(this.url);
 
@@ -36,7 +30,21 @@ export class ChatService {
     }
 
     setName(name:string) {
+        this.socket.emit('myname', name);
         this.store.dispatch({type:'SET_MY_NAME', payload:name})
+    }
+
+    getNumUsers() {
+        let observable = new Observable((observer:any) => {
+            this.socket.on('numusers', (data:any) => {
+                observer.next(data);
+            });
+
+            return () => {
+                this.socket.disconnect();
+            }
+        })
+        return observable;
     }
 
 }

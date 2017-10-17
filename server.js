@@ -14,14 +14,13 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 let enviroment = app.get('env');
 
-var numUsers = 0;
+var numUsers = 0; // note: you get 2 connections per window if you use webpack-dev-server
 
 io.on('connection', function(socket){
     let user = {};
     user.username = socket.client.id.substring(0,5);
     console.log('a user connected', ++numUsers);
-    console.log(user.username)
-    console.log(io.engine.clientsCount); // why does each browser window connect two times??
+    console.log('a user connected ', user.username + " ", numUsers);
     if (numUsers == 1) {
         user.type = 'heart';
     } else if (numUsers == 3) {
@@ -29,6 +28,16 @@ io.on('connection', function(socket){
     } else {
         user.type = 'viewer';
     }
+
+    io.emit('numusers', {
+        numUsers
+    });
+
+
+    socket.on('myname', function(data) {
+        console.log('my name is: ', data);
+        user.username = data;
+    })
 
     socket.on('new message', function(data) {
         console.log('new message', data);
@@ -49,7 +58,11 @@ io.on('connection', function(socket){
     });
 
     socket.on('disconnect', function() {
-        console.log('disconnect', --numUsers);
+        numUsers--;
+        console.log('disconnect', numUsers);
+        io.emit('numusers', {
+            numUsers
+        })
     })
 
 });

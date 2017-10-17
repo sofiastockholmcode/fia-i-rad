@@ -1,3 +1,7 @@
+<div class="container">
+    <p>Number of players connected: {{numUsers}}</p>
+    <p>You are connected as: </p>
+</div>
 <div class="container-fluid">
     <div class="row border-row">
         <div class="col-xs-4 content"  *ngFor="let square of squares; let i = index">
@@ -12,6 +16,8 @@
         </div>
     </div>
 </div>
+
+
 
 <div class="container" *ngIf="gameIsFinished">
     <div class="row">

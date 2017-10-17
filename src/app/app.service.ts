@@ -1,13 +1,11 @@
-import { Injectable } from '@angular/core';
-import {Square} from "./app.component";
+import {Injectable} from '@angular/core';
+import {Square} from "./board.component";
 
-import { Store, provideStore} from '@ngrx/store'
-import { Observable } from 'rxjs/Observable'
-import {Reducer, Action, ActionReducer} from '@ngrx/store';
+import {Store} from '@ngrx/store'
+import {Observable} from 'rxjs/Observable'
+import {Action, ActionReducer} from '@ngrx/store';
 
-import { Http, Response } from '@angular/http';
-
-
+import {Http} from '@angular/http';
 
 
 @Injectable()
@@ -24,9 +22,6 @@ export class AppService {
     setSquareState(square:Square):void {
         console.log('set square state')
         this.store.dispatch({type:'SET_SQUARE_STATE', payload:square});
-    }
-
-    getSquareState(pos:String) {
     }
 
     sendSquare(square:Square):void {

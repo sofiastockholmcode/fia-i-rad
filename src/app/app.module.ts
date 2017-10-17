@@ -1,16 +1,18 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule }  from '@angular/platform-browser';
-import { AppComponent } from './app.component';
+import {NgModule} from '@angular/core';
+import {BrowserModule}  from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
-import {AppService} from "./app.service";
 import {RouterModule, Routes} from '@angular/router';
-import {squareReducer} from "./app.service";
-import {Store, StoreModule } from '@ngrx/store'
-import {RootComponent} from "./root.component";
+import {StoreModule} from '@ngrx/store'
+
 import {HttpModule} from '@angular/http';
-import {ChatService, names} from "./chat.service";
+import {RootComponent} from "./root.component";
 import {ChatComponent} from "./chat.component";
 import {SelectModeComponent} from "./select-mode.component";
+import {BoardComponent} from "./board.component";
+
+import {AppService} from "./app.service";
+import {ChatService, names} from "./chat.service";
+import {squareReducer} from "./app.service";
 
 
 
@@ -19,7 +21,7 @@ import {SelectModeComponent} from "./select-mode.component";
 const appRoutes: Routes = [
     {path: '', component: SelectModeComponent},
     {path: 'chat', component: ChatComponent},
-    {path: '**', component: AppComponent}
+    {path: 'tic', component: BoardComponent}
 ];
 
 
@@ -33,9 +35,9 @@ const appRoutes: Routes = [
 
   ],
   declarations: [
-    AppComponent,
-    RootComponent,
-    ChatComponent,
+      RootComponent,
+      BoardComponent,
+      ChatComponent,
       SelectModeComponent
   ],
     providers: [
