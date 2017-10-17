@@ -19,6 +19,7 @@ export class AppComponent {
   squares:Square[];
   gameIsFinished = false;
   result = '';
+  connection:any;
 
   constructor(private appService:AppService, private router:Router, public store:Store<any>) {
     this.store.select('squareReducer').subscribe(
@@ -31,16 +32,22 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.appService.reset();
-    this.opponentMove();
+    // this.opponentMove();
+    this.connection = this.appService.getSquares().subscribe((square:Square) => {
+      console.log('got square', square);
+      this.appService.setSquareState(square);
+    })
   }
 
   squareClick(square:any):void {
     if (!this.gameIsFinished) {
       if (square.state == 'unchecked') {
         let newSquare = new Square(square.name, 'checked');
-        this.appService.setSquareState(newSquare);
+        // this.appService.setSquareState(newSquare);
+        this.appService.sendSquare({name: square.name, state: 'checked'});
         if (!this.checkIfWon(newSquare))
-          this.opponentMove();
+          //this.opponentMove();
+          console.log('other players turn')
       }
     }
   }
@@ -57,7 +64,7 @@ export class AppComponent {
   reset() {
     this.gameIsFinished = false;
     this.appService.reset();
-    this.opponentMove();
+    // this.opponentMove();
   }
 
 
