@@ -13,7 +13,14 @@ export class AppService {
     private url = 'http://localhost:8080';
     private socket = io(this.url);
 
-    constructor(private http:Http, private store:Store<any>) {}
+    constructor(private http:Http, private store:Store<any>) {
+        this.socket.on('initialstate', (data:any) => {
+            console.log('socket on initial state', data)
+            this.store.dispatch({type:'SET_MY_NAME', payload:data.username});
+            this.store.dispatch({type:'SET_MY_TYPE', payload:data.type})
+        });
+
+    }
 
     reset():void {
         this.store.dispatch({type:'RESET_SQUARES', payload:''})
@@ -43,7 +50,71 @@ export class AppService {
         return observable;
     }
 
+    getInitialState() {
+        return this.store.select('names');
+    }
+
+
+
+    /* CHAT */
+    sendMessage(message:any) {
+        this.socket.emit('new message', message);
+    }
+
+    getMessages() {
+        console.log(' get messages');
+        let observable = new Observable((observer:any) => {
+            this.socket.on('new message', (data:any) => {
+                observer.next(data);
+            })
+
+            return () => {
+                this.socket.disconnect();
+            }
+        })
+
+        return observable;
+    }
+
+    setName(name:string) {
+        this.socket.emit('myname', name);
+        this.store.dispatch({type:'SET_MY_NAME', payload:name})
+    }
+
+    getNumUsers() {
+        let observable = new Observable((observer:any) => {
+            this.socket.on('numusers', (data:any) => {
+                observer.next(data);
+            });
+
+            return () => {
+                this.socket.disconnect();
+            }
+        })
+        return observable;
+    }
+
+
 }
+
+
+
+export const names:ActionReducer<any> = (state:any = {myUsername:'', myType:''}, action:Action) => {
+    switch (action.type) {
+        case 'SET_MY_NAME':
+            return Object.assign({}, state, {
+                myUsername: action.payload
+            });
+        case 'SET_MY_TYPE': {
+            return Object.assign({}, state, {
+                myType: action.payload
+            })
+        }
+        default:
+            return state;
+    }
+}
+
 
 export const SET_SQUARE_STATE = 'SET_SQUARE_STATE';
 export const RESET_SQUARES = 'RESET_SQUARES';

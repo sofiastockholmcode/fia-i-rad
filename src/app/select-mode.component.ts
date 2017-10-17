@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {ChatService} from "./chat.service";
 import {Store} from "@ngrx/store";
 import { Router } from '@angular/router';
+import {AppService} from "./app.service";
 
 
 @Component({
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
     templateUrl: './select-mode.component.html',
 })
 export class SelectModeComponent {
-    constructor(private chatService:ChatService, public store:Store<any>, private router:Router) {
+    constructor(private chatService:AppService, public store:Store<any>, private router:Router) {
 
     }
 
@@ -22,7 +22,7 @@ export class SelectModeComponent {
     }
 
     selectMulti() {
-        console.log("select multi");
+        console.log("select multi")
         this.multiSelected = true;
     }
 

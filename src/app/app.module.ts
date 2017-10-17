@@ -11,8 +11,7 @@ import {SelectModeComponent} from "./select-mode.component";
 import {BoardComponent} from "./board.component";
 
 import {AppService} from "./app.service";
-import {ChatService, names} from "./chat.service";
-import {squareReducer} from "./app.service";
+import {squareReducer, names} from "./app.service";
 
 
 
@@ -41,8 +40,7 @@ const appRoutes: Routes = [
       SelectModeComponent
   ],
     providers: [
-        AppService,
-        ChatService
+        AppService
     ],
   bootstrap: [ RootComponent ]
 })

@@ -2,9 +2,7 @@ import {Component} from '@angular/core';
 import '../../public/css/styles.css';
 import {AppService} from "./app.service";
 import {Router} from "@angular/router";
-
 import { Store} from '@ngrx/store'
-import {ChatService} from "./chat.service";
 
 
 @Component({
@@ -20,8 +18,10 @@ export class BoardComponent {
   result = '';
   connection:any;
   numUsers:any;
+  type:'viewer';
+  username:'anonomous';
 
-  constructor(private appService:AppService, private router:Router, public store:Store<any>, private chatService:ChatService) {
+  constructor(private appService:AppService, private router:Router, public store:Store<any>) {
     this.store.select('squareReducer').subscribe(
         squares => {
           this.squares = <Square[]>squares;
@@ -37,11 +37,17 @@ export class BoardComponent {
       this.appService.setSquareState(square);
     });
 
-    this.chatService.getNumUsers().subscribe((data:any) => {
+    this.appService.getNumUsers().subscribe((data:any) => {
       console.log("got num users:", data)
       this.numUsers = data.numUsers
     });
     console.log('this.numUsers: ', this.numUsers);
+
+    this.appService.getInitialState().subscribe((data:any) => {
+      console.log('initial state', data)
+      this.type = data.myType;
+      this.username = data.myUsername;
+    });
   }
 
   squareClick(square:any):void {
