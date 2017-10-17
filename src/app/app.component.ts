@@ -34,7 +34,6 @@ export class AppComponent {
     this.appService.reset();
     // this.opponentMove();
     this.connection = this.appService.getSquares().subscribe((square:Square) => {
-      console.log('got square', square);
       this.appService.setSquareState(square);
     })
   }
@@ -47,7 +46,7 @@ export class AppComponent {
         this.appService.sendSquare({name: square.name, state: 'checked'});
         if (!this.checkIfWon(newSquare))
           //this.opponentMove();
-          console.log('other players turn')
+          console.log('other players turn. or is it? hehe')
       }
     }
   }

@@ -17,28 +17,39 @@ let enviroment = app.get('env');
 var numUsers = 0;
 
 io.on('connection', function(socket){
-    console.log('a user connected');
-    let username = socket.client.id.substring(0,5);
+    let user = {};
+    user.username = socket.client.id.substring(0,5);
+    console.log('a user connected', ++numUsers);
+    console.log(user.username)
+    console.log(io.engine.clientsCount); // why does each browser window connect two times??
+    if (numUsers == 1) {
+        user.type = 'heart';
+    } else if (numUsers == 3) {
+        user.type = 'cross';
+    } else {
+        user.type = 'viewer';
+    }
 
     socket.on('new message', function(data) {
         console.log('new message', data);
 
         io.emit('new message', {
-            username: username,
+            username: user.username,
             text: data
         })
     });
 
     socket.on('square', function(data) {
-        console.log('got square');
+        data.type = user.type;
+        console.log('got square', data);
         io.emit('square', {
-            username: username,
+            username: user.username,
             square: data
         })
     });
 
     socket.on('disconnect', function() {
-        console.log('disconnect');
+        console.log('disconnect', --numUsers);
     })
 
 });

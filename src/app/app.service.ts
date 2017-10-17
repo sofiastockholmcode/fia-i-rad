@@ -22,6 +22,7 @@ export class AppService {
     }
 
     setSquareState(square:Square):void {
+        console.log('set square state')
         this.store.dispatch({type:'SET_SQUARE_STATE', payload:square});
     }
 
@@ -69,10 +70,7 @@ export const squareReducer:ActionReducer<any> = (state:any = initialStateSquares
         case SET_SQUARE_STATE:
             let newState = state.map((square:Square) => {
                 if (square.name == action.payload.square.name) {
-                    console.log(action.payload.username);
-                    if (action.payload.username == 1)
-                        square.state = action.payload.square.state;
-                    else square.state = 'oppChecked';
+                    square.state = action.payload.square.type;
                 }
                 return square;
             });
