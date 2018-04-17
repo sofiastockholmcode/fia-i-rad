@@ -5,6 +5,5 @@ http://fia-i-rad.herokuapp.com
 
 ## TODO 
 * deploy instructions
-* select multi/single
-* set username
+* move game state to server 
 * room functionality 

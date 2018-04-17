@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Square} from "./board.component";
+import {Square} from './board.component';
 
 import {Store} from '@ngrx/store'
 import {Observable} from 'rxjs/Observable'
@@ -15,19 +15,24 @@ export class AppService {
 
     constructor(private http:Http, private store:Store<any>) {
         this.socket.on('initialstate', (data:any) => {
-            console.log('socket on initial state', data)
+            console.log('got initial data', data);
             this.store.dispatch({type:'SET_MY_NAME', payload:data.username});
-            this.store.dispatch({type:'SET_MY_TYPE', payload:data.type})
+            this.store.dispatch({type:'SET_MY_TYPE', payload:data.type});
+            this.store.dispatch({type: SET_GAME_STATE, payload: data.gameState});
         });
+
+        this.socket.on('gameState', ((data:any) => {
+            this.store.dispatch({type: SET_GAME_STATE, payload: data})
+        }))
 
     }
 
     reset():void {
-        this.store.dispatch({type:'RESET_SQUARES', payload:''})
+        this.store.dispatch({type:'RESET_SQUARES', payload:''});
+        this.socket.emit('reset');
     }
 
     setSquareState(square:Square):void {
-        console.log('set square state')
         this.store.dispatch({type:'SET_SQUARE_STATE', payload:square});
     }
 
@@ -36,11 +41,13 @@ export class AppService {
     }
 
     getSquares() {
-        console.log('get squares');
         let observable = new Observable((observer:any) => {
             this.socket.on('square', (data:any) => {
+                console.log('got data: ', data.square);
+                let square = data.square;
+                console.log('square name is: ', square.name)
                 observer.next(data);
-            })
+            });
 
             return () => {
                 this.socket.disconnect();
@@ -48,6 +55,14 @@ export class AppService {
         })
 
         return observable;
+    }
+
+    getGameState() {
+        let observable = new Observable((observable:any) => {
+            this.socket.on('gameState', ((data:any) => {
+                this.store.dispatch({type: SET_GAME_STATE, payload: data})
+            }))
+        })
     }
 
     getInitialState() {
@@ -62,7 +77,6 @@ export class AppService {
     }
 
     getMessages() {
-        console.log(' get messages');
         let observable = new Observable((observer:any) => {
             this.socket.on('new message', (data:any) => {
                 observer.next(data);
@@ -118,8 +132,9 @@ export const names:ActionReducer<any> = (state:any = {myUsername:'', myType:''},
 
 export const SET_SQUARE_STATE = 'SET_SQUARE_STATE';
 export const RESET_SQUARES = 'RESET_SQUARES';
+export const SET_GAME_STATE = 'SET_GAME_STATE';
 
-let initialStateSquares = [
+let initialGameState = [
     {name: '11', state: 'unchecked'},
     {name: '12', state: 'unchecked'},
     {name: '13', state: 'unchecked'},
@@ -131,20 +146,22 @@ let initialStateSquares = [
     {name: '33', state: 'unchecked'}
 ];
 
-export const squareReducer:ActionReducer<any> = (state:any = initialStateSquares, action:Action) => {
+export const squareReducer:ActionReducer<any> = (state:any = initialGameState, action:Action) => {
     switch (action.type) {
         case SET_SQUARE_STATE:
             let newState = state.map((square:Square) => {
                 if (square.name == action.payload.square.name) {
-                    square.state = action.payload.square.type;
+                    square.state = action.payload.square.state;
                 }
+
                 return square;
             });
-            console.log('new state is', newState);
+            console.log('SET_SQUARE_STATE: ', newState);
             return newState;
         case RESET_SQUARES:
-            console.log('reset squares');
             return state.map((square:Square) => { return {name:square.name, state: 'unchecked'}});
+        case SET_GAME_STATE:
+            return action.payload;
         default:
             return state;
     }

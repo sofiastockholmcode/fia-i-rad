@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import '../../public/css/styles.css';
 import {AppService} from "./app.service";
 import {Router} from "@angular/router";
-import { Store} from '@ngrx/store'
+import {Store} from '@ngrx/store'
 
 
 @Component({
@@ -12,7 +12,6 @@ import { Store} from '@ngrx/store'
 })
 
 export class BoardComponent {
-
   squares:Square[];
   gameIsFinished = false;
   result = '';
@@ -25,6 +24,13 @@ export class BoardComponent {
     this.store.select('squareReducer').subscribe(
         squares => {
           this.squares = <Square[]>squares;
+          if (this.squares){
+            console.log('my squares changed', this.squares);
+            if (this.squares.filter(square => square.state != 'unchecked').length == 0) {
+              console.log('other player reset the game')
+              this.gameIsFinished = false;
+            }
+          }
         }
     )
   }
@@ -35,16 +41,14 @@ export class BoardComponent {
     // this.opponentMove();
     this.connection = this.appService.getSquares().subscribe((square:Square) => {
       this.appService.setSquareState(square);
+      this.checkIfSomeoneWon(square['square']);
     });
 
     this.appService.getNumUsers().subscribe((data:any) => {
-      console.log("got num users:", data)
       this.numUsers = data.numUsers
     });
-    console.log('this.numUsers: ', this.numUsers);
 
     this.appService.getInitialState().subscribe((data:any) => {
-      console.log('initial state', data)
       this.type = data.myType;
       this.username = data.myUsername;
     });
@@ -53,23 +57,9 @@ export class BoardComponent {
   squareClick(square:any):void {
     if (!this.gameIsFinished) {
       if (square.state == 'unchecked') {
-        let newSquare = new Square(square.name, 'checked');
-        // this.appService.setSquareState(newSquare);
         this.appService.sendSquare({name: square.name, state: 'checked'});
-        if (!this.checkIfWon(newSquare))
-          //this.opponentMove();
-          console.log('other players turn. or is it? hehe')
       }
     }
-  }
-
-  getState(square:Square) {
-    if (square.state == 'checked') {
-      return 'yellow';
-    } else if (square.state == 'oppChecked')
-     return 'red';
-    else
-      return 'greeen';
   }
 
   reset() {
@@ -92,16 +82,11 @@ export class BoardComponent {
     let opponentSquare = new Square(selectedSquare.name, 'oppChecked');
     this.appService.setSquareState(opponentSquare);
 
-    this.checkIfWon(opponentSquare);
+    this.checkIfSomeoneWon(opponentSquare);
   }
 
-  checkIfWon(thisSquare:Square):boolean {
-
-    console.log('thisSquare: ', thisSquare.state);
-      let p:String;
-      if (thisSquare.state == 'checked')
-        p = 'You';
-      else p = 'Opponent';
+  checkIfSomeoneWon(thisSquare:Square):boolean {
+      let p:String = thisSquare.state;
 
       if (this.squares.filter((square:Square) => {
             return (square.name.charAt(0) == thisSquare.name.charAt(0) && square.state == thisSquare.state)
@@ -147,5 +132,5 @@ export class BoardComponent {
 export class Square {
   constructor(name:string, state:string) {this.name=name, this.state=state}
   name:string;
-  state:string;
+  state:string; // unchecked, heart, cross
 }
