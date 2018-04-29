@@ -10,7 +10,8 @@ import {Http} from '@angular/http';
 
 @Injectable()
 export class AppService {
-    private url = 'http://localhost:8080';
+    // private url = 'http://localhost:8080';
+    private url = 'https://fia-i-rad.herokuapp.com';
     private socket = io(this.url);
 
     constructor(private http:Http, private store:Store<any>) {

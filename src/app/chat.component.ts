@@ -13,7 +13,7 @@ import {AppService} from "./app.service";
 
         <form (keyup.enter)="sendMessage()" class="form-inline" style="position: fixed; bottom: 0">
             <input class="form-control" [(ngModel)]="message" name="message" required/>
-            <button class="btn btn-default btn-sm" type="submit">Send</button>
+            <!--<button class="btn btn-default btn-sm" type="submit">Send</button>-->
         </form>
     </div>
 
