@@ -1,7 +1,7 @@
 <div class="container">
-    <p>Number of players connected: {{numUsers}}</p>
+    <p>Number of players connected: {{numUsers || 1}}</p>
     <p>You are connected as: {{type}}</p>
-    <p>name: {{username}}</p>
+    <p *ngIf="username">Name: {{username}}</p>
 </div>
 <div class="container-fluid">
     <div class="row border-row">
@@ -25,5 +25,3 @@
         </div>
     </div>
 </div>
-
-<chat></chat>
